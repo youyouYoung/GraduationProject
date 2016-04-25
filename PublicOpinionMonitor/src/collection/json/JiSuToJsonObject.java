@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 public class JiSuToJsonObject implements ToJsonObject
 {
+	//json文件中保存url, title, authors, contents值的键的名称.
 	private final String urlName = "url";
 	private final String titleName = "title";
 	private final String authorsName = "authors";
