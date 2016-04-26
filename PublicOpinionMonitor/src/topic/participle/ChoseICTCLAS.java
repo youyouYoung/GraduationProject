@@ -19,7 +19,7 @@ public class ChoseICTCLAS
 		String toBasePath = System.getProperties().get("user.dir").toString();
 		//配置文件的位置
 		String propertiesFile = toBasePath + "/properties/quote.properties";
-		System.out.println(propertiesFile);
+		//System.out.println(propertiesFile);
 		//ICTCLAS文件位置
 		StringBuffer path = new StringBuffer(toBasePath);
 		
@@ -36,7 +36,7 @@ public class ChoseICTCLAS
 			Reader in = new FileReader(propertiesFile);
 			properties.load(in);
 			String ictclasPath = properties.getProperty("topic_ictclas_path");
-			System.out.println(ictclasPath);
+			//System.out.println(ictclasPath);
 			path.append(ictclasPath);
 			in.close();
 		}

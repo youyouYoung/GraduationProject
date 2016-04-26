@@ -3,6 +3,8 @@
  * */
 package topic.participle;
 
+import java.io.UnsupportedEncodingException;
+
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
@@ -12,7 +14,7 @@ public class ICTCLAS
 	public interface CLibrary extends Library
 	{
 		//绑定分词工具
-		CLibrary instance = (CLibrary) Native.loadLibrary(ChoseICTCLAS.getICTCLAS(), CLibrary.class);
+		CLibrary instance = (CLibrary) Native.loadLibrary(ChoseICTCLAS.getICTCLAS(), CLibrary.class);//
 		
 		/**
 		 * 
@@ -22,7 +24,7 @@ public class ICTCLAS
 		 * @param sLicenceCode
 		 * 
 		 * */
-		public int NLPIR_Init(byte[] sDataPath, int encoding, byte[] sLicenceCode);
+		public int NLPIR_Init(String sDataPath, int encoding, String sLicenceCode);
 
 		public String NLPIR_ParagraphProcess(String sSrc, int bPOSTagged);
 
@@ -31,11 +33,11 @@ public class ICTCLAS
 		public void NLPIR_Exit();
 	}
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws UnsupportedEncodingException
 	{
 		//System.out.println(ChoseICTCLAS.getICTCLAS());
 		
-		int init_flag = ICTCLAS.CLibrary.instance.NLPIR_Init("".getBytes(), 1, "0".getBytes());
+		int init_flag = ICTCLAS.CLibrary.instance.NLPIR_Init("", 1, "0");
 		
 		if (0 == init_flag)
 		{
