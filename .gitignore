@@ -1,0 +1,9 @@
+#eclipse config file
+#.metadata/*
+
+#test file
+*Test.*
+
+#ICTCLAS log file
+*.log
+*.err
