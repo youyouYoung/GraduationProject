@@ -7,3 +7,6 @@
 #ICTCLAS log file
 *.log
 *.err
+
+#gedit back file
+*~
