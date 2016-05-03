@@ -5,10 +5,9 @@
  * 	2.关闭数据库链接的方法.
  * 
  * */
-package collection.database;
+package database;
 
 import java.sql.SQLException;
-//import java.util.List;
 import java.sql.Statement;
 
 interface DBConnection

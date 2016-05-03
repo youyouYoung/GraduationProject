@@ -3,11 +3,8 @@
  * */
 package topic.participle;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
+import util.PropertiesKey;
+import util.PropertiesReader;
 
 import com.sun.jna.Platform;
 
@@ -20,7 +17,7 @@ public class ICTCLASParameter
 	{
 		//指向ICTCLAS的绝对路径
 		StringBuffer path = new StringBuffer(System.getProperties().getProperty("user.dir"));
-		path.append(getPropertiesValue("topic_ictclas_path"));
+		path.append(PropertiesReader.getQuoteInfo(PropertiesKey.QUOTE_ICTPATH));
 		path.append(selectICTCLAS());
 		
 		return path.toString();
@@ -31,7 +28,7 @@ public class ICTCLASParameter
 	 * */
 	public static String getDataLocation()
 	{
-		String dataLocaion = getPropertiesValue("topic_ictclas_data_path");
+		String dataLocaion = PropertiesReader.getQuoteInfo(PropertiesKey.QUOTE_ICTDATAPATH);
 		return dataLocaion == null ? "" : dataLocaion;
 	}
 	
@@ -56,40 +53,4 @@ public class ICTCLASParameter
 		return ictclasType.toString();
 	}
 	
-	/**
-	 * 获取quote.properties配置文件中的内容.
-	 * @param key 配置文件中的键
-	 * */
-	private static String getPropertiesValue(String key)
-	{
-		String result = null;
-		final String propertiesFilePath =  "/properties/quote.properties";
-		final String basePath = System.getProperties().getProperty("user.dir");
-		
-		try
-		{
-			FileReader reader = new FileReader(new File(basePath + propertiesFilePath));
-			Properties properties = new Properties();
-			
-			properties.load(reader);
-			result = properties.getProperty(key);
-			
-			reader.close();
-		}
-		catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			System.err.println("Can't find properties file.");
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			System.err.println("Can't read properties file.");
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-
 }

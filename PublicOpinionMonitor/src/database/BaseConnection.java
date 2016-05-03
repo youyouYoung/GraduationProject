@@ -10,12 +10,16 @@
  * -------------------------------------------------------------------------------
  * 
  * */
-package collection.database;
+
+package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import util.PropertiesKey;
+import util.PropertiesReader;
 
 public class BaseConnection implements DBConnection
 {
@@ -28,17 +32,13 @@ public class BaseConnection implements DBConnection
 		getConnection();
 	}
 	
-	/**
-	 * 
-	 * 创建一个Connection对象.
-	 * 
-	 * */
+	/** 创建一个Connection对象. */
 	private void getConnection()
 	{
-		final String server = "localhost";
-		final String dbName = "db";
-		final String user = "root";
-		final String pwd = "mysqlforyouyou";
+		final String server = PropertiesReader.getDatabaseInfo(PropertiesKey.DB_DBSERVER);
+		final String dbName = PropertiesReader.getDatabaseInfo(PropertiesKey.DB_DBNAME);
+		final String user = PropertiesReader.getDatabaseInfo(PropertiesKey.DB_DBUSER);
+		final String pwd = PropertiesReader.getDatabaseInfo(PropertiesKey.DB_DBPASSWD);
 		
 		try
 		{

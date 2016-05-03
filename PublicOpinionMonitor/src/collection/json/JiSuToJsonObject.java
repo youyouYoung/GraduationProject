@@ -18,13 +18,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.PropertiesKey;
+import util.PropertiesReader;
+
 public class JiSuToJsonObject implements ToJsonObject
 {
 	//json文件中保存url, title, authors, contents值的键的名称.
-	private final String urlName = "url";
-	private final String titleName = "title";
-	private final String authorsName = "authors";
-	private final String contentName = "contents";
+	private final String urlName = PropertiesReader.getjsonKeyInfo(PropertiesKey.JSON_JISUURL);
+	private final String titleName = PropertiesReader.getjsonKeyInfo(PropertiesKey.JSON_JISUTITLE);
+	private final String authorsName = PropertiesReader.getjsonKeyInfo(PropertiesKey.JSON_JISUAUTHORS);
+	private final String contentName = PropertiesReader.getjsonKeyInfo(PropertiesKey.JSON_JISUPOSTS);
 
 	@Override
 	public JsonObject toJsonObject(String json) throws JSONException
@@ -47,6 +50,7 @@ public class JiSuToJsonObject implements ToJsonObject
 		return jsonObject;
 	}
 	
+	@Override
 	public JsonObject toJsonObject(File jsonFile)
 	{
 		JsonObject object = null;
