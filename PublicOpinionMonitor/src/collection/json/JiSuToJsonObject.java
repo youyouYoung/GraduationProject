@@ -30,9 +30,9 @@ public class JiSuToJsonObject implements ToJsonObject
 	private final String contentName = PropertiesReader.getjsonKeyInfo(PropertiesKey.JSON_JISUPOSTS);
 
 	@Override
-	public JsonObject toJsonObject(String json) throws JSONException
+	public JiSuObject toJsonObject(String json) throws JSONException
 	{
-		JsonObject jsonObject = null;
+		JiSuObject jsonObject = null;
 		JSONObject obj = new JSONObject(json);
 		
 		String url =  obj.get(urlName).toString();
@@ -40,7 +40,7 @@ public class JiSuToJsonObject implements ToJsonObject
 		JSONArray authorArray = obj.getJSONArray(authorsName);
 		JSONArray contentArray = obj.getJSONArray(contentName);
 
-		jsonObject = new JsonObject(url, title);
+		jsonObject = new JiSuObject(url, title);
 		for (int i = 0; i < contentArray.length(); i++)
 		{
 			String author = authorArray.length() > i ? authorArray.get(i).toString().replace("'", "\\'") : "lost";
@@ -51,9 +51,9 @@ public class JiSuToJsonObject implements ToJsonObject
 	}
 	
 	@Override
-	public JsonObject toJsonObject(File jsonFile)
+	public JiSuObject toJsonObject(File jsonFile)
 	{
-		JsonObject object = null;
+		JiSuObject object = null;
 		try
 		{
 				BufferedReader bReader = new BufferedReader(new FileReader(jsonFile));

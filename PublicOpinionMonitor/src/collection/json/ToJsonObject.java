@@ -25,12 +25,12 @@ public interface ToJsonObject
 	 * @param json 待转化的字符串
 	 * @return JsonObject 将字符串转化为一个对象,无法读取返回NULL
 	 * */
-	public JsonObject toJsonObject(String json) throws JSONException;
+	public JiSuObject toJsonObject(String json) throws JSONException;
 	
 	/**
 	 * 将文件转化为JsonObject对象.
 	 * @param jsonFile 待转化的文件
 	 * @return JsonObject 转化后的对象,无法读取返回NULL
 	 * */
-	public JsonObject toJsonObject(File jsonFile);
+	public JiSuObject toJsonObject(File jsonFile);
 }

@@ -109,6 +109,34 @@ public class Corpus
         return corpus;
     }
 
+    /**
+     * Load documents from parameter
+     *
+     * @param data is text documents.
+     * @return a corpus
+     */
+    public static Corpus loading(String data)
+    {
+        Corpus corpus = new Corpus();
+        List<String> wordList = new LinkedList<String>();
+        String[] words = data.split(" ");
+        
+        for (String word : words)
+        {
+            if (word.trim().length() < 2) continue;
+            wordList.add(word);
+        }
+        
+        //1. 将词和索引添加到一个map中.
+        //2. 将词单独保存在string[]中.
+        //3. 将索引保存在linkedlist<int[]>中.
+        corpus.addDocument(wordList);
+        
+        if (corpus.getVocabularySize() == 0) return null;
+
+        return corpus;        
+    }
+    
     public Vocabulary getVocabulary()
     {
         return vocabulary;

@@ -10,7 +10,7 @@ package database;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-interface DBConnection
+public interface DBConnection
 {	
 	/**
 	 * 该方法用于返回一个Statement对象.
