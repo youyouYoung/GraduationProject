@@ -21,4 +21,9 @@ public class PropertiesKey
 	public static final String QUOTE_ICTPATH = "topic_ictclas_path";
 	public static final String QUOTE_ICTNAME = "topic_ictclas_name";
 	public static final String QUOTE_ICTDATAPATH = "topic_ictclas_data_path";
+	
+	//in systemParamter.properties
+	public static final String SYSPAR_CRAWLERTHREAD = "crawler_threadcount";
+	public static final String SYSPAR_KEYCOUNT = "ict_keywordscount";
+	public static final String SYSPAR_THEMECOUNT = "lda_themecount";
 }
