@@ -16,6 +16,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * a set of documents
@@ -99,6 +100,37 @@ public class Corpus
                 }
             }
             br.close();
+            //1. 将词和索引添加到一个map中.
+            //2. 将词单独保存在string[]中.
+            //3. 将索引保存在linkedlist<int[]>中.
+            corpus.addDocument(wordList);
+        }
+        if (corpus.getVocabularySize() == 0) return null;
+
+        return corpus;
+    }
+    
+    /**
+     * Load documents from list
+     *
+     * @param a list contain documents, a element is a document.
+     * @return a corpus or null if list useless.
+     * @throws IOException
+     */
+    public static Corpus load(BlockingQueue<String> docs)
+    {
+        Corpus corpus = new Corpus();
+        for (String doc : docs)
+        {
+            // wordList存储一个文件中所有的词
+            List<String> wordList = new LinkedList<String>();
+            String[] words = doc.split(" ");
+            for (String word : words)
+            {
+                if (word.trim().length() < 2) continue;
+                wordList.add(word);
+            }
+
             //1. 将词和索引添加到一个map中.
             //2. 将词单独保存在string[]中.
             //3. 将索引保存在linkedlist<int[]>中.
