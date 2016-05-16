@@ -1,5 +1,6 @@
 /**
- * 匹配规则类. 该类用于创建一个特殊匹配规则的Pattern对象.
+ * 匹配规则类. 该类创建一个特殊匹配规则来获取网页文本中的标题,时间,作者,帖子等内容.
+ * getObject()会将需要获取的数据保存在一个JiSuObject对象中, 并返回该对象.
  * 
  * 获取传入字符串中需要的匹配项.
  * */
@@ -7,7 +8,6 @@ package collection.crawler;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import collection.json.JiSuObject;
 
 public class RegexPattern
@@ -40,7 +40,7 @@ public class RegexPattern
 				Matcher matcher = getTitle().matcher(line);
 				if (matcher.find())
 				{
-					title = matcher.group(1);
+					title = matcher.group(1).trim();
 					jisuObject.setTitle(title);
 				}
 			}
@@ -52,7 +52,7 @@ public class RegexPattern
 				Matcher matcher = getAuthor().matcher(line);
 				if (matcher.find())
 				{
-					author = matcher.group(1);
+					author = matcher.group(1).trim();
 					foundAuthor = true;
 				}
 			}
@@ -63,7 +63,7 @@ public class RegexPattern
 				Matcher matcher = getTime().matcher(line);
 				if (matcher.find())
 				{
-					date = matcher.group(1);
+					date = matcher.group(1).trim();
 					foundDate = true;
 				}
 			}
@@ -105,7 +105,7 @@ public class RegexPattern
 					else
 					{
 						//非引用部分
-						post.append(line);
+						post.append(line.trim());
 						Matcher matcher = endPost().matcher(line);
 						if (matcher.find())
 						{
@@ -113,7 +113,7 @@ public class RegexPattern
 							foundDate = false;
 							postBegin = false;
 							
-							jisuObject.addPost(author, post.toString().replaceAll("<.*?>", " "), date);
+							jisuObject.addPost(author, post.toString().replaceAll("<.*?>", " ").trim(), date);
 						}
 					}
 				}
@@ -164,4 +164,5 @@ public class RegexPattern
 	{
 		return Pattern.compile("</td></tr></table>");
 	}
+
 }
