@@ -15,6 +15,17 @@ import java.util.Properties;
 public class PropertiesReader
 {
 	/**
+	 * 获取systemParamter.properties文件中属性值
+	 * 该文件保存了系统配置信息.
+	 * @param key 属性文件中的key.
+	 * */
+	public static String getSystemParamter(String key)
+	{
+		final String sysParamterPath = "/properties/systemParamter.properties";
+		return getPropertiesValue(sysParamterPath, key);
+	}
+	
+	/**
 	 * 获取quote.properties文件中的内容.
 	 * 该文件保存了所有关于第三方引用的信息.
 	 * @param key 该文件中的key.
@@ -76,13 +87,13 @@ public class PropertiesReader
 		catch (FileNotFoundException e)
 		{
 			// TODO Auto-generated catch block
-			System.err.println("Can't open properties file: " + propertiesFilePath);
+			System.err.println("Please make sure you have properties file in this folder: " + System.getProperties().getProperty("user.dir") + "/properties");
 			//e.printStackTrace();
 		}
 		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
-			System.err.println("Can't read properties file." + propertiesFilePath);
+			System.err.println("Can't read this properties file: " + propertiesFilePath +", Please check your permission");
 			//e.printStackTrace();
 		}
 		
