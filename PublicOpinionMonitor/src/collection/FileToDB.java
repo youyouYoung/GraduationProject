@@ -41,7 +41,7 @@ public class FileToDB
 			JiSuObject object;
 			if ((object = toObject.toJsonObject(jsonFile)) != null)
 			{
-				objectToDB.putJiSuObject(object);
+				objectToDB.addJiSuObject(object);
 			}
 		}
 		else
@@ -55,7 +55,7 @@ public class FileToDB
 		}		
 	}
 	
-	public void filetoDB(String filePath)
+	public void load(String filePath)
 	{
 		toObject(new File(filePath));
 		objectToDB.flush();
