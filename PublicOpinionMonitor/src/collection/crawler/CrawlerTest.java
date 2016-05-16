@@ -91,13 +91,7 @@ public class CrawlerTest
 			}
 		}
 	}
-	
-	public void test3()
-	{
-		new Test1("http://bitpt.cn/bbs/forum.php?mod=viewthread&tid=421900&extra=page%3D1%26filter%3Ddateline%26orderby%3Dlastpost%26typeid%3D440%26typeid%3D440%26orderby%3Dlastpost").run();
 		
-	}
-	
 	public void test4()
 	{
 		String line = "'sasf'qwrw\\qr\"afsf\"";
