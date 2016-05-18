@@ -60,14 +60,19 @@ public class Driver
 		return false;
 	}
 	
+	/**
+	 * 启动分词程序
+	 * */
 	public boolean participleDriver()
 	{
 		int init_flag = CLibrary.Instance.NLPIR_Init(ICTCLASParameter.getDataLocation(), 1, "0");
 		
 		return init_flag == 0 ? false : true;
 	}
-
-	/***/
+	
+	/**
+	 * 关闭系统资源
+	 * */
 	public boolean shutDown()
 	{
 		try
