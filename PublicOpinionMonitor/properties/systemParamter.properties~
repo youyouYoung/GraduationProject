@@ -15,6 +15,6 @@ ict_keywordscount=20
 lda_themecount=3
 
 # 分析的周数
-analysis_weeknumber=3
+analysis_weeknumber=10
 
 

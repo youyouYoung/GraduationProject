@@ -26,4 +26,5 @@ public class PropertiesKey
 	public static final String SYSPAR_CRAWLERTHREAD = "crawler_threadcount";
 	public static final String SYSPAR_KEYCOUNT = "ict_keywordscount";
 	public static final String SYSPAR_THEMECOUNT = "lda_themecount";
+	public static final String SYSPAR_WEEKNUMBER = "analysis_weeknumber";
 }

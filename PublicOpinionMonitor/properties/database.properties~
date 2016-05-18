@@ -37,7 +37,7 @@
 #
 #----------------------------------------------------------
 
-db_server=10.4.20.128
+db_server=localhost
 db_name=db
 db_user=root
-db_pwd=mysqlforroot
+db_pwd=mysqlforyouyou
