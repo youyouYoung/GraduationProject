@@ -117,7 +117,7 @@ public class Corpus
      * @return a corpus or null if list useless.
      * @throws IOException
      */
-    public static Corpus load(BlockingQueue<String> docs)
+    public static synchronized Corpus load(BlockingQueue<String> docs)
     {
         Corpus corpus = new Corpus();
         for (String doc : docs)
