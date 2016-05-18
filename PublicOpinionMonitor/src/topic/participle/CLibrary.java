@@ -31,6 +31,7 @@ public interface CLibrary extends Library
 	 * @param Line 需要获取关键字的字符串.
 	 * @param MaxKayLimit 获取到的关键字的最大数量.
 	 * @param WeightOut 是否显示该关键字的权值,true为显示.
+	 * @return 关键字,每个关键字之间以#分割
 	 * */
 	public String NLPIR_GetKeyWords(String Line, int MaxKeyLimit,	boolean WeightOut);
 

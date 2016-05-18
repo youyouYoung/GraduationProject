@@ -1,4 +1,5 @@
 /**
+ * 该类用于分析输入文本的主题, 获取文本特征值.
  * 该类用于分析舆情趋势, 也可以得到舆情数据的特征值. 包括:
  * 	1. 某个帖子的舆情信息
  * 	2. 某段时间的舆情信息
@@ -61,6 +62,7 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 					break;
 				}
 				new Thread(new Worker(orignString)).start();
+				keywordsQueue.put(orignString);
 			}
 			catch (InterruptedException e)
 			{
@@ -71,7 +73,23 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 		try
 		{
 			doneSignal.await();
-			themeMaps = getThemes(orignDocumentsData);
+			new Thread(new Runnable()
+			{
+				StringBuffer data = new StringBuffer();
+				@Override
+				public void run()
+				{
+					// TODO Auto-generated method stub
+					String line = null;
+					while ((line = keywordsQueue.poll()) != null)
+					{
+						data.append(line);
+					}
+
+					documentKeywords(data.toString());
+				}
+			}).start();
+			themeMaps = getThemes(participleResult);
 		}
 		catch (InterruptedException e)
 		{
@@ -107,6 +125,7 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 			}
 		}
 	}
+	
 		
 	/**
 	 * 添加需要获取主题的原始数据.
@@ -129,13 +148,25 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 	}
 	
 	/**
-	 * 获取字符串的特征值, 返回分词结果.
+	 * 对字符串分词
 	 * */
 	private String documentParticiple(String content)
-	{
-		keywordsQueue.add(CLibrary.Instance.NLPIR_GetKeyWords(content, 20, false));
-		
+	{		
 		return CLibrary.Instance.NLPIR_ParagraphProcess(content, 0);
+	}
+	
+	/**
+	 * 获取字符串特征值.
+	 * */
+	private void documentKeywords(String string)
+	{
+		int keyWrodsCount = new Integer(PropertiesReader.getSystemParamter(PropertiesKey.SYSPAR_KEYCOUNT)).intValue();
+		
+		String[] keywords = CLibrary.Instance.NLPIR_GetKeyWords(string, keyWrodsCount, false).split("#");
+		for (String keyword : keywords)
+		{
+			keywordsQueue.add(keyword);
+		}
 	}
 	
 	/**
@@ -144,7 +175,7 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 	 * @return 文档集主题数组
 	 * 		 结果以Map[]保存数组每个元素为一个主题, Map中每个Map.Entry为该主题的关键词(key保存)以及关键词对主题的贡献率(values).
 	 * */
-	private Map<String, Double>[] getThemes(LinkedBlockingQueue<String> orignDocumentsData2)
+	private Map<String, Double>[] getThemes(BlockingQueue<String> orignDocumentsData2)
 	{
 		Corpus corpus = Corpus.load(orignDocumentsData2);
 		
