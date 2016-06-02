@@ -233,9 +233,9 @@ public class LdaGibbsSampler
         // initial state of the Markov chain:
         initialState(K);
 
-        System.out.println("Sampling " + ITERATIONS
-                                   + " iterations with burn-in of " + BURN_IN + " (B/S="
-                                   + THIN_INTERVAL + ").");
+//        System.out.println("Sampling " + ITERATIONS
+//                                   + " iterations with burn-in of " + BURN_IN + " (B/S="
+//                                   + THIN_INTERVAL + ").");
 
         for (int i = 0; i < ITERATIONS; i++)
         {
@@ -255,30 +255,30 @@ public class LdaGibbsSampler
 
             if ((i < BURN_IN) && (i % THIN_INTERVAL == 0))
             {
-                System.out.print("B");
+//                System.out.print("B");
                 dispcol++;
             }
             // display progress
             if ((i > BURN_IN) && (i % THIN_INTERVAL == 0))
             {
-                System.out.print("S");
+//                System.out.print("S");
                 dispcol++;
             }
             // get statistics after burn-in
             if ((i > BURN_IN) && (SAMPLE_LAG > 0) && (i % SAMPLE_LAG == 0))
             {
                 updateParams();
-                System.out.print("|");
+//                System.out.print("|");
                 if (i % THIN_INTERVAL != 0)
                     dispcol++;
             }
             if (dispcol >= 100)
             {
-                System.out.println();
+//                System.out.println();
                 dispcol = 0;
             }
         }
-        System.out.println();
+//        System.out.println();
     }
 
     /**

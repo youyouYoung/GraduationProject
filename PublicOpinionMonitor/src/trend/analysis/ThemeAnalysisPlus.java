@@ -30,29 +30,29 @@ import util.PropertiesReader;
  * 
  * @author youyou
  * */
-public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
+public class ThemeAnalysisPlus implements Callable<ThemeAnalysisPlus.Result>
 {	
 	//保存传入的原始数据
 	private final LinkedBlockingQueue<String> orignDocumentsData = new LinkedBlockingQueue<String>();
 	//分词后的关键词集合
 	private final LinkedBlockingQueue<String> keywordsQueue = new LinkedBlockingQueue<String>();
-	//保存分词结果
-	private final BlockingQueue<String> participleResult = new LinkedBlockingQueue<String>();
 	//主题数组
 	private Map<String, Double>[] themeMaps = null;
-	//完成分词信号
+	//private String keywords = "INIT";
+	//完成每条记录的特征值获取
 	private CountDownLatch doneSignal = null;
+	//private StringBuffer orignData = new StringBuffer();
 	
 	/**
 	 * @param count 原始数据的行数
 	 * */
-	public ThemeAnalysis(int count)
+	public ThemeAnalysisPlus(int count)
 	{
 		doneSignal = new CountDownLatch(count);
 	}
 	
 	@Override
-	public ThemeAnalysis.Result call()
+	public ThemeAnalysisPlus.Result call()
 	{
 		while (true)
 		{
@@ -64,7 +64,7 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 					break;
 				}
 				new Thread(new Worker(orignString)).start();
-				keywordsQueue.put(orignString);
+				//orignData.append(orignString);
 			}
 			catch (InterruptedException e)
 			{
@@ -75,31 +75,24 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 		try
 		{
 			doneSignal.await();
-			new Thread(new Runnable()
-			{
-				StringBuffer data = new StringBuffer();
-				@Override
-				public void run()
-				{
-					// TODO Auto-generated method stub
-					String line = null;
-					while ((line = keywordsQueue.poll()) != null)
-					{
-						data.append(line);
-					}
-
-					documentKeywords(data.toString());
-				}
-			}).start();
-			themeMaps = getThemes(participleResult);
+//			new Thread(new Runnable()
+//			{
+//				@Override
+//				public void run()
+//				{					
+//					keywords = documentKeywords(orignData.toString());
+//				}
+//			}).start();
+			themeMaps = getThemes(keywordsQueue);
+			
 		}
 		catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return new ThemeAnalysis.Result();
+		//while ("INIT".equals(keywords)); //等待文档集关键字计算结束
+		return new ThemeAnalysisPlus.Result();
 	}
 	
 	/**
@@ -117,7 +110,7 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 		{
 			try
 			{
-				participleResult.put(documentParticiple(data));
+				keywordsQueue.put(documentKeywords(data));
 				doneSignal.countDown();
 			}
 			catch (InterruptedException e)
@@ -148,49 +141,49 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 			}
 		}
 	}
-	
+		
 	/**
-	 * 对字符串分词
+	 * 获取输入字符串的关键词.
 	 * */
-	private String documentParticiple(String content)
-	{
-		String[] words = CLibrary.Instance.NLPIR_ParagraphProcess(content, 0).split(" ");
-		HashSet<String> stopLists = Driver.getSystemDriver().getStopList();
-		StringBuffer participleWords = new StringBuffer();
-		for (String string : words)
-		{
-			if (stopLists.contains(string.toLowerCase()))
-			{
-				continue;
-			}
-			participleWords.append(string + " ");
-		}
-		return participleWords.toString();
-	}
-	
-	/**
-	 * 获取字符串特征值.
-	 * */
-	private void documentKeywords(String string)
+	private String documentKeywords(String string)
 	{
 		int keyWrodsCount = new Integer(PropertiesReader.getSystemParamter(PropertiesKey.SYSPAR_KEYCOUNT)).intValue();
+		String keywordWithStopList = CLibrary.Instance.NLPIR_GetKeyWords(string, keyWrodsCount, false);
 		
-		String[] keywords = CLibrary.Instance.NLPIR_GetKeyWords(string, keyWrodsCount, false).split("#");
-		for (String keyword : keywords)
+		
+		String[] words = keywordWithStopList.split("#");
+		HashSet<String> stopList = Driver.getSystemDriver().getStopList();
+		
+		
+		if (stopList != null)
 		{
-			keywordsQueue.add(keyword);
+			StringBuffer buffer = new StringBuffer();
+			for (String word : words)
+			{
+				if (stopList.contains(word.toLowerCase()))
+				{
+					continue;
+				}
+				buffer.append(word + " ");
+			}
+			return buffer.toString();
 		}
+		else
+		{
+			return keywordWithStopList.replace('#', ' ');
+		}
+		
 	}
 	
 	/**
 	 * 获取文档集documents的主题.
-	 * @param orignDocumentsData2 文档集
+	 * @param documents 文档集
 	 * @return 文档集主题数组
 	 * 		 结果以Map[]保存数组每个元素为一个主题, Map中每个Map.Entry为该主题的关键词(key保存)以及关键词对主题的贡献率(values).
 	 * */
-	private Map<String, Double>[] getThemes(BlockingQueue<String> orignDocumentsData2)
+	private Map<String, Double>[] getThemes(BlockingQueue<String> documents)
 	{
-		Corpus corpus = Corpus.load(orignDocumentsData2);
+		Corpus corpus = Corpus.load(documents);
 		
 		LdaGibbsSampler ldaGibbsSampler = new LdaGibbsSampler(corpus.getDocument(), corpus.getVocabularySize());
 		
@@ -206,13 +199,13 @@ public class ThemeAnalysis implements Callable<ThemeAnalysis.Result>
 	 * */
 	public class Result
 	{
-		/**
-		 * 获取关键词
-		 * */
-		public BlockingQueue<String> getKeywords()
-		{
-			return keywordsQueue;
-		}
+//		/**
+//		 * 获取关键词
+//		 * */
+//		public String getKeywords()
+//		{
+//			return keywords;
+//		}
 		
 		/**
 		 * 获取主题

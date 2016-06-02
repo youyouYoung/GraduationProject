@@ -21,10 +21,17 @@ public class PropertiesKey
 	public static final String QUOTE_ICTPATH = "topic_ictclas_path";
 	public static final String QUOTE_ICTNAME = "topic_ictclas_name";
 	public static final String QUOTE_ICTDATAPATH = "topic_ictclas_data_path";
+	public static final String QUOTE_LISTLOCATION = "stoplist_location";
 	
 	//in systemParamter.properties
 	public static final String SYSPAR_CRAWLERTHREAD = "crawler_threadcount";
 	public static final String SYSPAR_KEYCOUNT = "ict_keywordscount";
 	public static final String SYSPAR_THEMECOUNT = "lda_themecount";
 	public static final String SYSPAR_WEEKNUMBER = "analysis_weeknumber";
+	public static final String SYSPAR_DATALIMIT = "data_limit";
+	public static final String SYSPAR_CONTRIBUTION = "min_contributionrate";
+	public static final String SYSPAR_THEMEPAGE = "webpage_detail";
+	public static final String SYSPAR_WEEKPAGE = "webpage_week";
+	public static final String SYSPAR_LISTPAGE = "webpage_list";
+	public static final String SYSPAR_WEBPAGELOCATION = "webpage_location";
 }
